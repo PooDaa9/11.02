@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" manifest="cache.manifest">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,6 +108,7 @@
       display: flex;
       gap: 25px;
       color: #f3f4f6;
+      margin: 0;
     }
 
     #kernel-options label {
@@ -347,6 +348,24 @@
     .media-box, .ad-box, .ad-tag {
       display: none !important;
     }
+
+    /* مؤشر تحميل بسيط */
+    .loading-indicator {
+      display: none;
+      color: #fbbf24;
+      font-size: 14px;
+      margin-top: 10px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .loading-indicator.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -378,6 +397,9 @@
       <input id="autoJbInput" type="checkbox">
       <label for="autoJbInput" id="autoJbLabel">Auto Jailbreak (التشغيل التلقائي)</label>
     </div>
+    
+    <!-- مؤشر تحميل -->
+    <div class="loading-indicator" id="loadingIndicator">⏳ جاري التحميل...</div>
   </div>
 
   <!-- التخطيط الرئيسي: صورة Cat.jpg من مجلد includes + كونسول -->
@@ -397,7 +419,7 @@
 
   <!-- معلومات إضافية -->
   <div class="info-row">
-    <span>📱 بوده بلايستشن</span>
+    <span>📱 بؤرّ بالبستن</span>
     <span>📞 01278566009</span>
   </div>
 
@@ -407,25 +429,108 @@
   <script src="src/main.js"></script>
   <script src="includes/script.js"></script>
 
-  <!-- سكريبت تفاعلي بسيط (محاكاة) -->
+  <!-- سكريبت تفاعلي مع حل مشكلة الكاش -->
   <script>
     (function() {
+      // ===== حل مشكلة الكاش =====
+      // 1. إزالة manifest مؤقتاً لتجنب مشكلة 10%
+      const htmlElement = document.querySelector('html');
+      if (htmlElement) {
+        htmlElement.removeAttribute('manifest');
+      }
+      
+      // 2. التعامل مع أحداث applicationCache
+      if (window.applicationCache) {
+        try {
+          // منع الأخطاء من تعطيل الصفحة
+          window.applicationCache.onerror = function(e) {
+            console.log('Cache error handled - continuing');
+            return true;
+          };
+          
+          window.applicationCache.oncached = function(e) {
+            console.log('Cache cached event');
+            return true;
+          };
+          
+          window.applicationCache.onupdateready = function() {
+            console.log('Cache update ready');
+            return true;
+          };
+          
+          window.applicationCache.onobsolete = function() {
+            console.log('Cache obsolete');
+            return true;
+          };
+          
+          // إذا توقف عند 10%، نعيد التحميل
+          window.applicationCache.onprogress = function(e) {
+            if (e.loaded && e.total) {
+              const percent = (e.loaded / e.total) * 100;
+              console.log('Cache progress: ' + percent + '%');
+              // إذا توقفنا عند 10% تقريباً لأكثر من 5 ثواني
+              if (percent > 5 && percent < 15) {
+                // نعيد التحميل بعد 3 ثواني
+                if (!window._cacheRetry) {
+                  window._cacheRetry = setTimeout(function() {
+                    console.log('Cache stalled, reloading...');
+                    window.location.reload();
+                  }, 3000);
+                }
+              }
+            }
+          };
+        } catch(e) {
+          console.log('Cache handling error:', e);
+        }
+      }
+
+      // 3. إضافة ملف manifest بطريقة ديناميكية بعد تحميل الصفحة
+      setTimeout(function() {
+        // نضيف manifest مرة أخرى بعد 10 ثواني
+        setTimeout(function() {
+          if (htmlElement) {
+            // نضيف manifest ولكن مع رقم إصدار لتحديث الكاش
+            htmlElement.setAttribute('manifest', 'cache.manifest?v=' + Date.now());
+            console.log('Manifest re-added with version');
+          }
+        }, 10000);
+      }, 2000);
+
+      // ===== الوظائف الأساسية =====
       const btn = document.getElementById('jeilbrek');
       const consoleEl = document.getElementById('console');
       const radioNet = document.getElementById('netctrl-exploit');
       const radioLapse = document.getElementById('lapse-exploit');
       const autoJb = document.getElementById('autoJbInput');
+      const loadingIndicator = document.getElementById('loadingIndicator');
+
+      function showLoading() {
+        if (loadingIndicator) {
+          loadingIndicator.classList.add('active');
+        }
+      }
+
+      function hideLoading() {
+        if (loadingIndicator) {
+          loadingIndicator.classList.remove('active');
+        }
+      }
 
       if (btn) {
         btn.addEventListener('click', function(e) {
           e.preventDefault();
           if (this.disabled) return;
           this.disabled = true;
+          showLoading();
+          
           const kernel = radioNet.checked ? 'NetCtrl' : 'Lapse';
           consoleEl.innerText = `[System] Loading ${kernel} exploit...\n[System] Please wait...\n[!] (محاكاة) Jailbreak قيد التشغيل.`;
+          
           setTimeout(() => {
             consoleEl.innerText = `[✓] ${kernel} exploit executed.\n[✓] Kernel patched successfully.\n[System] Ready.`;
-            btn.disabled = false;
+            this.disabled = false;
+            hideLoading();
           }, 1800);
         });
       }
@@ -434,6 +539,7 @@
         autoJb.addEventListener('change', function() {
           if (this.checked && !btn.disabled) {
             consoleEl.innerText = '[Auto] Jailbreak تلقائي مفعل\n[System] جاري التنفيذ...';
+            showLoading();
             setTimeout(() => {
               btn.click();
             }, 400);
@@ -445,11 +551,27 @@
       window.addEventListener('load', function() {
         const img = document.querySelector('.image-box img');
         if (img) {
+          const src = img.getAttribute('src');
+          if (src && !src.includes('?t=')) {
+            img.src = src + '?t=' + Date.now();
+          }
+          
           if (!img.complete || img.naturalWidth === 0) {
-            img.src = 'includes/Cat.jpg';
+            setTimeout(function() {
+              img.src = 'includes/Cat.jpg?t=' + Date.now();
+            }, 500);
           }
         }
+        setTimeout(hideLoading, 1000);
       });
+
+      window.addEventListener('error', function(e) {
+        if (e.target.tagName === 'IMG') {
+          console.log('Image load error handled');
+        }
+        hideLoading();
+      }, true);
+
     })();
   </script>
 

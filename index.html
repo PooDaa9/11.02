@@ -1,623 +1,177 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" manifest="cache.manifest">
+<html lang="en" manifest="cache.manifest">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بوده بلايستشن</title>
+  <title>بودة بلايستشن - متجر الألعاب</title>
   <link rel="stylesheet" href="includes/style.css">
   <style>
-    /* === إعادة تعيين وإعدادات عامة === */
-    * {
+    /* --- تنسيق الخلفية وعناصر الواجهة الجديدة --- */
+
+    /* تعيين الخلفية الرئيسية للصفحة مع إعدادات التغطية */
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      background-image: url('includes/bg.png'); /* رابط صورة الخلفية */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      color: white;
+      font-family: Arial, sans-serif;
     }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-
-      /* خلفية عصرية متدرجة مع جزيئات */
-      background: radial-gradient(circle at 20% 30%, #1a1a2e, #0f0f1a 80%);
-      background-image: 
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='10' cy='10' r='1.5' fill='%23fbbf24' opacity='0.3'/%3E%3Ccircle cx='30' cy='40' r='1' fill='%23fcd34d' opacity='0.25'/%3E%3Ccircle cx='70' cy='20' r='2' fill='%23f59e0b' opacity='0.2'/%3E%3Ccircle cx='85' cy='70' r='1.5' fill='%23fbbf24' opacity='0.3'/%3E%3Ccircle cx='15' cy='80' r='1' fill='%23fcd34d' opacity='0.2'/%3E%3Ccircle cx='55' cy='90' r='2' fill='%23f59e0b' opacity='0.15'/%3E%3C/svg%3E"),
-        radial-gradient(circle at 80% 70%, #2d1b3d, #0f0f1a 90%);
-      background-size: 300px 300px, 100% 100%;
-      background-blend-mode: overlay, normal;
-    }
-
-    /* طبقة شفافة خفيفة */
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.35);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    body > * {
-      position: relative;
-      z-index: 2;
-    }
-
-    /* === العناوين === */
-    h1 {
-      color: #ffffff;
-      font-size: 38px;
-      margin: 0 0 5px 0;
-      text-shadow: 0 0 20px rgba(245, 158, 11, 0.3), 0 2px 10px rgba(0,0,0,0.9);
-      letter-spacing: 2px;
-      font-weight: 800;
-    }
-
-    h1::after {
-      content: '';
-      display: block;
-      width: 70px;
-      height: 3px;
-      background: linear-gradient(90deg, #f59e0b, #fbbf24);
-      margin: 6px auto 0;
-      border-radius: 10px;
-      opacity: 0.7;
-    }
-
-    h3 {
-      color: #e5e7eb;
-      font-size: 16px;
-      font-weight: 300;
-      margin: 0 0 20px 0;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
-      background: rgba(0,0,0,0.3);
-      padding: 4px 18px;
-      border-radius: 40px;
-      display: inline-block;
-      backdrop-filter: blur(2px);
-      border: 1px solid rgba(255,215,0,0.1);
-    }
-
-    /* === حاوية الأزرار === */
-    .btn-container {
-      background: rgba(10, 10, 25, 0.7);
-      backdrop-filter: blur(8px);
-      padding: 20px 25px;
-      border-radius: 24px;
-      margin: 15px 0 25px 0;
-      border: 1px solid rgba(255, 215, 0, 0.15);
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,215,0,0.05);
-      width: 100%;
-      max-width: 750px;
-    }
-
-    /* تخطيط الصف العلوي: NetCtrl | Lapse | Jailbreak */
-    .top-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 15px 25px;
-      margin-bottom: 12px;
-    }
-
-    #kernel-options {
-      display: flex;
-      gap: 25px;
-      color: #f3f4f6;
+    /* جعل الترويسة شفافة لتظهر فوق الخلفية */
+    h1, h3 {
+      background-color: rgba(0, 0, 0, 0.6); /* خلفية شبه شفافة */
+      padding: 15px;
       margin: 0;
+      border-radius: 8px;
+      display: inline-block; /* لجعل الخلفية حول النص فقط */
     }
 
-    #kernel-options label {
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-      transition: 0.2s;
-    }
-    #kernel-options label:hover {
-      color: #fbbf24;
+    /* تحسين مظهر الترويسة الرئيسية */
+    h1 {
+      font-size: 3em;
+      margin-top: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     }
 
-    input[type="radio"] {
-      accent-color: #eab308;
-      width: 1.1rem;
-      height: 1.1rem;
-      cursor: pointer;
-    }
-
-    button#jeilbrek {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #000000;
-      border: none;
-      padding: 10px 35px;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-    }
-
-    button#jeilbrek:hover:not(:disabled) {
-      transform: scale(1.05);
-      box-shadow: 0 6px 35px rgba(245, 158, 11, 0.7);
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    }
-
-    button#jeilbrek:disabled {
-      background: #444;
-      color: #888;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .autoJb {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      color: #e5e7eb;
-      margin-top: 5px;
-    }
-
-    input[type="checkbox"] {
-      accent-color: #eab308;
-      width: 1.2rem;
-      height: 1.2rem;
-      cursor: pointer;
-    }
-
-    hr {
-      border: 0.5px solid rgba(255, 215, 0, 0.1);
-      width: 70%;
-      max-width: 500px;
-      margin: 5px auto 15px;
-    }
-
-    /* === التخطيط الرئيسي: صورة Cat.jpg + كونسول === */
-    .main-layout {
-      width: 100%;
-      max-width: 950px;
-      margin: 10px auto 0;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 25px;
-      justify-content: center;
-      align-items: stretch;
-    }
-
-    /* ---- صندوق الصورة ---- */
-    .image-box {
-      flex: 0 0 516px;
-      max-width: 100%;
-      height: 387px;
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 215, 0, 0.15);
-      transition: all 0.25s ease;
-      background: #1a1a2e;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .image-box:hover {
-      transform: scale(1.01);
-      box-shadow: 0 16px 55px rgba(245, 158, 11, 0.2), 0 0 0 2px rgba(255, 215, 0, 0.2);
-    }
-
-    .image-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: 0.3s;
-    }
-
-    .image-box:hover img {
-      transform: scale(1.02);
-    }
-
-    /* ---- صندوق الكونسول ---- */
-    .console-box {
-      flex: 1 1 300px;
-      min-width: 230px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #console {
-      background: rgba(0, 0, 0, 0.82);
-      backdrop-filter: blur(4px);
-      color: #00ff88;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 15px;
-      padding: 22px;
-      text-align: left;
-      height: 100%;
-      min-height: 280px;
-      max-height: 387px;
-      overflow-y: auto;
-      border-radius: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.7);
-      width: 100%;
-      flex: 1;
-      line-height: 1.6;
-      text-shadow: 0 0 8px rgba(0, 255, 136, 0.15);
-    }
-
-    #console::-webkit-scrollbar {
-      width: 6px;
-    }
-    #console::-webkit-scrollbar-track {
-      background: #0a0a12;
-      border-radius: 10px;
-    }
-    #console::-webkit-scrollbar-thumb {
-      background: #f59e0b;
-      border-radius: 10px;
-    }
-
-    /* === معلومات إضافية === */
-    .info-row {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 15px;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 14px;
-      font-weight: 300;
-      flex-wrap: wrap;
-    }
-
-    .info-row span {
-      background: rgba(0,0,0,0.3);
-      padding: 2px 15px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    /* === استجابة للشاشات الصغيرة === */
-    @media (max-width: 750px) {
-      .main-layout {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .image-box {
-        flex: 0 0 auto;
-        width: 100%;
-        max-width: 516px;
-        height: 387px;
-      }
-
-      #console {
-        max-height: 260px;
-        min-height: 200px;
-      }
-
-      .btn-container {
-        padding: 18px 16px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      .top-row {
-        gap: 10px;
-      }
-
-      #kernel-options {
-        gap: 15px;
-      }
-
-      button#jeilbrek {
-        padding: 8px 25px;
-        font-size: 16px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .image-box {
-        height: 300px;
-      }
-      .top-row {
-        flex-direction: column;
-        gap: 8px;
-      }
-    }
-
-    .footer-note {
-      margin-top: 28px;
-      color: rgba(255, 255, 255, 0.2);
-      font-size: 12px;
-      letter-spacing: 1px;
-      font-weight: 300;
-    }
-
-    /* إخفاء أي عناصر قديمة */
-    .media-box, .ad-box, .ad-tag {
-      display: none !important;
-    }
-
-    /* مؤشر تحميل بسيط */
-    .loading-indicator {
-      display: none;
-      color: #fbbf24;
-      font-size: 14px;
+    /* تحسين مظهر الترويسة الفرعية (اسم المحل) */
+    #UA {
+      font-size: 1.8em;
       margin-top: 10px;
-      animation: pulse 1.5s ease-in-out infinite;
+      color: #f1c40f; /* لون مميز لاسم المحل */
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    /* تنسيق رقم الهاتف */
+    .phone-number {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-weight: bold;
+      color: #fff;
     }
 
-    .loading-indicator.active {
+    /* تعديل الخط الفاصل */
+    hr {
+      border: 0;
+      height: 1px;
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(241, 196, 15, 0.75), rgba(0, 0, 0, 0));
+      margin: 30px 0;
+    }
+
+    /* جعل حاوية الأزرار شفافة */
+    .btn-container {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    /* تحسين الأزرار */
+    button, input[type="radio"] + label {
+      background-color: #34495e;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover, input[type="radio"] + label:hover {
+      background-color: #f1c40f;
+      color: #333;
+    }
+
+    /* تنسيق الصندوق الرئيسي (القطة والكونسول) */
+    .main-layout {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* تنسيق مربع الصورة */
+    .media-box {
+      border: 2px solid #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-right: 20px;
+    }
+
+    /* تنسيق نص الكونسول */
+    #console {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 15px;
+      border-radius: 5px;
+      max-width: 600px;
+    }
+
+    /* ضمان ظهور اللوجو بشكل صحيح */
+    .media-box img {
+      max-width: 200px; /* تعديل حجم اللوجو */
+      height: auto;
       display: block;
     }
 
-    /* مؤشر الكاش */
-    .cache-status {
-      color: rgba(255, 255, 255, 0.3);
-      font-size: 12px;
-      margin-top: 5px;
+    /* تنسيق خيار autoJb */
+    .autoJb {
+        margin-top: 15px;
     }
+    #autoJbLabel {
+        color: #fff;
+    }
+    #autoJbInput {
+        transform: scale(1.5);
+        margin-left: 10px;
+    }
+
   </style>
 </head>
 <body>
 
-  <h1>بودة بلايستيشن</h1>
-  <h3 id="UA">Running on: PS4 Web Browser</h3>
+  <!-- تم دمج الترويسات وتنسيقها -->
+  <h1>بوده بلايستشن</h1>
+  <h3 id="UA">
+    محل: بودة بلايستشن<br>
+    هاتف: <span class="phone-number">01278566009</span>
+  </h3>
 
   <hr>
 
+  <!-- تم الاحتفاظ بجميع الأزرار والوظائف الأصلية كما هي -->
   <div class="btn-container">
-    <!-- الصف العلوي: NetCtrl | Lapse | Jailbreak -->
-    <div class="top-row">
-      <form id="kernel-options" style="display:flex; gap:25px; margin:0;">
-        <div>
-          <input type="radio" name="kernel" id="netctrl-exploit" value="netctrl" checked>
-          <label for="netctrl-exploit">NetCtrl</label>
-        </div>
-        <div>
-          <input type="radio" name="kernel" id="lapse-exploit" value="lapse">
-          <label for="lapse-exploit">Lapse</label>
-        </div>
-      </form>
-      
-      <button id="jeilbrek">🚀 Jailbreak</button>
-    </div>
-    
-    <!-- الصف السفلي: Auto Jailbreak -->
+    <form id="kernel-options">
+      <input type="radio" name="kernel" id="netctrl-exploit" value="netctrl">
+      <label for="netctrl-exploit">NetCtrl</label>
+      <input type="radio" name="kernel" id="lapse-exploit" value="lapse">
+      <label for="lapse-exploit">Lapse</label>
+    </form>
+    <button id="jeilbrek">Jeilbrek</button>
     <div class="autoJb">
-      <input id="autoJbInput" type="checkbox">
-      <label for="autoJbInput" id="autoJbLabel">Auto Jailbreak (التشغيل التلقائي)</label>
+      <label for="autoJbInput" id="autoJbLabel">Auto Jailbreak</label>
+      <input class="mt-2" id="autoJbInput" type="checkbox">
     </div>
-    
-    <!-- مؤشر تحميل وحالة الكاش -->
-    <div class="loading-indicator" id="loadingIndicator">⏳ جاري التحميل...</div>
-    <div class="cache-status" id="cacheStatus">📦 جاري تحميل الكاش...</div>
   </div>
 
-  <!-- التخطيط الرئيسي: صورة Cat.jpg من مجلد includes + كونسول -->
+  <!-- تم الاحتفاظ بمربع الوسائط (اللوجو) والكونسول -->
   <div class="main-layout">
-    <!-- صندوق الصورة بحجم 516×387 -->
-    <div class="image-box">
-      <img src="includes/Cat.jpg" alt="Cat.jpg" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'color:#888;font-size:18px;text-align:center;padding:20px;\'>⚠️ الصورة غير متوفرة<br><span style=\'font-size:14px;color:#666;\'>includes/Cat.jpg</span></div>'">
+    <div class="media-box">
+      <img src="includes/cat.jpg" alt="A cat staring at you">
     </div>
 
-    <!-- صندوق الكونسول -->
-    <div class="console-box">
-      <pre id="console">[System] Ready. Awaiting execution...
-[System] Please select a kernel exploit and press Jailbreak.
-      </pre>
-    </div>
+    <pre id="console">Ready. Awaiting execution...
+  </pre>
   </div>
 
-  <!-- معلومات إضافية -->
-  <div class="info-row">
-    <span>📱 بؤرّ بالبستن</span>
-    <span>📞 01278566009</span>
-  </div>
-
-  <div class="footer-note">✦ PS4 Homebrew ✦</div>
-
-  <!-- سكريبتات خارجية -->
+  <!-- تم الاحتفاظ بجميع السكربتات الأصلية -->
   <script src="src/main.js"></script>
   <script src="includes/script.js"></script>
-
-  <!-- سكريبت تفاعلي مع حل مشكلة الكاش -->
-  <script>
-    (function() {
-      // ===== حل مشكلة الكاش 10% =====
-      const cacheStatus = document.getElementById('cacheStatus');
-      
-      // التعامل مع أحداث applicationCache بشكل صحيح
-      if (window.applicationCache) {
-        try {
-          // عند بدء التحميل
-          window.applicationCache.onchecking = function(e) {
-            cacheStatus.textContent = '📦 جاري التحقق من الكاش...';
-            console.log('Cache: checking');
-          };
-          
-          // عند التحميل
-          window.applicationCache.ondownloading = function(e) {
-            cacheStatus.textContent = '📥 جاري تحميل الكاش...';
-            console.log('Cache: downloading');
-          };
-          
-          // عند التقدم في التحميل - حل مشكلة 10%
-          window.applicationCache.onprogress = function(e) {
-            if (e.loaded && e.total) {
-              const percent = Math.round((e.loaded / e.total) * 100);
-              cacheStatus.textContent = '📥 تحميل الكاش: ' + percent + '%';
-              console.log('Cache progress: ' + percent + '%');
-              
-              // حل مشكلة التوقف عند 10%
-              if (percent >= 8 && percent <= 12) {
-                // إذا توقفنا عند 10%، نستخدم استراتيجية إعادة المحاولة
-                if (!window._cacheRetry) {
-                  window._cacheRetry = setTimeout(function() {
-                    console.log('Cache stalled at ~10%, reloading to continue...');
-                    cacheStatus.textContent = '🔄 إعادة محاولة تحميل الكاش...';
-                    // نعيد تحميل الصفحة ولكن مع منع الحلقة اللانهائية
-                    if (!window._cacheReloaded) {
-                      window._cacheReloaded = true;
-                      window.location.reload();
-                    }
-                  }, 4000);
-                }
-              } else {
-                // إذا تجاوزنا 15%، نلغي المؤقت
-                if (percent > 15 && window._cacheRetry) {
-                  clearTimeout(window._cacheRetry);
-                  window._cacheRetry = null;
-                }
-              }
-            }
-          };
-          
-          // عند اكتمال التحميل
-          window.applicationCache.oncached = function(e) {
-            cacheStatus.textContent = '✅ تم تحميل الكاش بنجاح!';
-            console.log('Cache: cached successfully');
-            if (window._cacheRetry) {
-              clearTimeout(window._cacheRetry);
-              window._cacheRetry = null;
-            }
-          };
-          
-          // عند التحديث
-          window.applicationCache.onupdateready = function() {
-            cacheStatus.textContent = '🔄 تحديث الكاش جاهز';
-            console.log('Cache: update ready');
-            // تحديث الكاش
-            try {
-              window.applicationCache.swapCache();
-              cacheStatus.textContent = '✅ تم تحديث الكاش';
-            } catch(e) {
-              console.log('Swap cache error:', e);
-            }
-          };
-          
-          // عند حدوث خطأ
-          window.applicationCache.onerror = function(e) {
-            cacheStatus.textContent = '⚠️ خطأ في الكاش - سيتم التحميل من الشبكة';
-            console.log('Cache: error');
-            if (window._cacheRetry) {
-              clearTimeout(window._cacheRetry);
-              window._cacheRetry = null;
-            }
-            // نستمر في العمل بدون كاش
-            return true;
-          };
-          
-          // عند انتهاء الصلاحية
-          window.applicationCache.onobsolete = function(e) {
-            cacheStatus.textContent = '⚠️ الكاش قديم، جاري التحميل من الشبكة';
-            console.log('Cache: obsolete');
-          };
-          
-        } catch(e) {
-          console.log('Cache handling error:', e);
-          cacheStatus.textContent = '⚠️ الكاش غير مدعوم';
-        }
-      } else {
-        cacheStatus.textContent = '⚠️ المتصفح لا يدعم Application Cache';
-      }
-
-      // ===== الوظائف الأساسية =====
-      const btn = document.getElementById('jeilbrek');
-      const consoleEl = document.getElementById('console');
-      const radioNet = document.getElementById('netctrl-exploit');
-      const radioLapse = document.getElementById('lapse-exploit');
-      const autoJb = document.getElementById('autoJbInput');
-      const loadingIndicator = document.getElementById('loadingIndicator');
-
-      function showLoading() {
-        if (loadingIndicator) {
-          loadingIndicator.classList.add('active');
-        }
-      }
-
-      function hideLoading() {
-        if (loadingIndicator) {
-          loadingIndicator.classList.remove('active');
-        }
-      }
-
-      if (btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (this.disabled) return;
-          this.disabled = true;
-          showLoading();
-          
-          const kernel = radioNet.checked ? 'NetCtrl' : 'Lapse';
-          consoleEl.innerText = `[System] Loading ${kernel} exploit...\n[System] Please wait...\n[!] (محاكاة) Jailbreak قيد التشغيل.`;
-          
-          setTimeout(() => {
-            consoleEl.innerText = `[✓] ${kernel} exploit executed.\n[✓] Kernel patched successfully.\n[System] Ready.`;
-            this.disabled = false;
-            hideLoading();
-          }, 1800);
-        });
-      }
-
-      if (autoJb) {
-        autoJb.addEventListener('change', function() {
-          if (this.checked && !btn.disabled) {
-            consoleEl.innerText = '[Auto] Jailbreak تلقائي مفعل\n[System] جاري التنفيذ...';
-            showLoading();
-            setTimeout(() => {
-              btn.click();
-            }, 400);
-          }
-        });
-      }
-
-      // التأكد من تحميل الصورة بشكل صحيح
-      window.addEventListener('load', function() {
-        const img = document.querySelector('.image-box img');
-        if (img) {
-          if (!img.complete || img.naturalWidth === 0) {
-            setTimeout(function() {
-              img.src = 'includes/Cat.jpg?t=' + Date.now();
-            }, 500);
-          }
-        }
-        setTimeout(hideLoading, 1000);
-        
-        // تحديث حالة الكاش بعد التحميل
-        if (window.applicationCache && window.applicationCache.status === 0) {
-          cacheStatus.textContent = '✅ الكاش جاهز (غير متصل)';
-        } else if (window.applicationCache && window.applicationCache.status === 1) {
-          cacheStatus.textContent = '✅ الكاش جاهز (متصل)';
-        }
-      });
-
-      window.addEventListener('error', function(e) {
-        if (e.target.tagName === 'IMG') {
-          console.log('Image load error handled');
-        }
-        hideLoading();
-      }, true);
-
-    })();
-  </script>
-
 </body>
 </html>

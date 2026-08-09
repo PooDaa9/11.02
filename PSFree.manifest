@@ -1,23 +1,23 @@
 CACHE MANIFEST
-# ملف الكاش لبودة بلايستيشن - PS4 Jailbreak
-# الإصدار: 2.0
-# تاريخ الإنشاء: 2026-08-10 00:57:05
-# عدد الملفات: 30
+# v1
+# Generated on 2026-08-10 01:00:15.407102
 
-# ===== ملفات الكاش =====
 CACHE:
+.gitattributes
+index.html
 includes/cat.jpg
 includes/script.js
 includes/style.css
-index.html
 src/lapse.js
 src/loader.js
 src/main.js
 src/misc.js
 src/netctrl.js
-src/payload.bin
+src/worker.js
+src/workers.js
 src/ps4/constants.js
 src/ps4/kernel.js
+src/ps4/userland.js
 src/ps4/patches/1000.bin
 src/ps4/patches/1050.bin
 src/ps4/patches/1100.bin
@@ -33,14 +33,6 @@ src/ps4/patches/850.bin
 src/ps4/patches/900.bin
 src/ps4/patches/903.bin
 src/ps4/patches/950.bin
-src/ps4/userland.js
-src/worker.js
-src/workers.js
 
-# ===== السماح بالشبكة =====
 NETWORK:
 *
-
-# ===== صفحات بديلة =====
-FALLBACK:
-/ /index.html

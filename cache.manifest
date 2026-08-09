@@ -1,14 +1,14 @@
 CACHE MANIFEST
-# الإصدار 5.0 - محسن ومبسط
+# الإصدار 8.0 - مع ترتيب ذكي
 
-# ===== الملفات الأساسية =====
 CACHE:
+# الملفات الأساسية أولاً
 index.html
 includes/cat.jpg
 includes/script.js
 includes/style.css
 
-# ===== ملفات الجافاسكريبت الأساسية =====
+# ملفات الجافاسكريبت
 src/main.js
 src/lapse.js
 src/loader.js
@@ -17,12 +17,14 @@ src/netctrl.js
 src/worker.js
 src/workers.js
 
-# ===== ملفات PS4 الأساسية =====
+# ملفات PS4
 src/ps4/constants.js
 src/ps4/kernel.js
 src/ps4/userland.js
+src/payload.bin
 
-# ===== باتشات PS4 (مجمعة) =====
+# الباتشات (مقسمة لمجموعتين)
+# مجموعة 1: الإصدارات القديمة
 src/ps4/patches/600.bin
 src/ps4/patches/620.bin
 src/ps4/patches/650.bin
@@ -30,6 +32,8 @@ src/ps4/patches/670.bin
 src/ps4/patches/700.bin
 src/ps4/patches/750.bin
 src/ps4/patches/800.bin
+
+# مجموعة 2: الإصدارات الحديثة
 src/ps4/patches/850.bin
 src/ps4/patches/900.bin
 src/ps4/patches/903.bin
@@ -39,10 +43,8 @@ src/ps4/patches/1050.bin
 src/ps4/patches/1100.bin
 src/ps4/patches/1102.bin
 
-# ===== السماح بالشبكة لأي شيء آخر =====
 NETWORK:
 *
 
-# ===== صفحة بديلة عند عدم الاتصال =====
 FALLBACK:
-/ /offline.html
+/ /index.html

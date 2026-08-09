@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" manifest="cache.manifest">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بوده بلايستشن</title>
+  <link rel="stylesheet" href="includes/style.css">
   <style>
     /* === إعادة تعيين وإعدادات عامة === */
     * {
@@ -366,6 +367,13 @@
     .loading-indicator.active {
       display: block;
     }
+
+    /* مؤشر الكاش */
+    .cache-status {
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 12px;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
@@ -398,8 +406,9 @@
       <label for="autoJbInput" id="autoJbLabel">Auto Jailbreak (التشغيل التلقائي)</label>
     </div>
     
-    <!-- مؤشر تحميل -->
+    <!-- مؤشر تحميل وحالة الكاش -->
     <div class="loading-indicator" id="loadingIndicator">⏳ جاري التحميل...</div>
+    <div class="cache-status" id="cacheStatus">📦 جاري تحميل الكاش...</div>
   </div>
 
   <!-- التخطيط الرئيسي: صورة Cat.jpg من مجلد includes + كونسول -->
@@ -432,70 +441,103 @@
   <!-- سكريبت تفاعلي مع حل مشكلة الكاش -->
   <script>
     (function() {
-      // ===== حل مشكلة الكاش =====
-      // 1. إزالة manifest مؤقتاً لتجنب مشكلة 10%
-      const htmlElement = document.querySelector('html');
-      if (htmlElement) {
-        htmlElement.removeAttribute('manifest');
-      }
+      // ===== حل مشكلة الكاش 10% =====
+      const cacheStatus = document.getElementById('cacheStatus');
       
-      // 2. التعامل مع أحداث applicationCache
+      // التعامل مع أحداث applicationCache بشكل صحيح
       if (window.applicationCache) {
         try {
-          // منع الأخطاء من تعطيل الصفحة
-          window.applicationCache.onerror = function(e) {
-            console.log('Cache error handled - continuing');
-            return true;
+          // عند بدء التحميل
+          window.applicationCache.onchecking = function(e) {
+            cacheStatus.textContent = '📦 جاري التحقق من الكاش...';
+            console.log('Cache: checking');
           };
           
-          window.applicationCache.oncached = function(e) {
-            console.log('Cache cached event');
-            return true;
+          // عند التحميل
+          window.applicationCache.ondownloading = function(e) {
+            cacheStatus.textContent = '📥 جاري تحميل الكاش...';
+            console.log('Cache: downloading');
           };
           
-          window.applicationCache.onupdateready = function() {
-            console.log('Cache update ready');
-            return true;
-          };
-          
-          window.applicationCache.onobsolete = function() {
-            console.log('Cache obsolete');
-            return true;
-          };
-          
-          // إذا توقف عند 10%، نعيد التحميل
+          // عند التقدم في التحميل - حل مشكلة 10%
           window.applicationCache.onprogress = function(e) {
             if (e.loaded && e.total) {
-              const percent = (e.loaded / e.total) * 100;
+              const percent = Math.round((e.loaded / e.total) * 100);
+              cacheStatus.textContent = '📥 تحميل الكاش: ' + percent + '%';
               console.log('Cache progress: ' + percent + '%');
-              // إذا توقفنا عند 10% تقريباً لأكثر من 5 ثواني
-              if (percent > 5 && percent < 15) {
-                // نعيد التحميل بعد 3 ثواني
+              
+              // حل مشكلة التوقف عند 10%
+              if (percent >= 8 && percent <= 12) {
+                // إذا توقفنا عند 10%، نستخدم استراتيجية إعادة المحاولة
                 if (!window._cacheRetry) {
                   window._cacheRetry = setTimeout(function() {
-                    console.log('Cache stalled, reloading...');
-                    window.location.reload();
-                  }, 3000);
+                    console.log('Cache stalled at ~10%, reloading to continue...');
+                    cacheStatus.textContent = '🔄 إعادة محاولة تحميل الكاش...';
+                    // نعيد تحميل الصفحة ولكن مع منع الحلقة اللانهائية
+                    if (!window._cacheReloaded) {
+                      window._cacheReloaded = true;
+                      window.location.reload();
+                    }
+                  }, 4000);
+                }
+              } else {
+                // إذا تجاوزنا 15%، نلغي المؤقت
+                if (percent > 15 && window._cacheRetry) {
+                  clearTimeout(window._cacheRetry);
+                  window._cacheRetry = null;
                 }
               }
             }
           };
+          
+          // عند اكتمال التحميل
+          window.applicationCache.oncached = function(e) {
+            cacheStatus.textContent = '✅ تم تحميل الكاش بنجاح!';
+            console.log('Cache: cached successfully');
+            if (window._cacheRetry) {
+              clearTimeout(window._cacheRetry);
+              window._cacheRetry = null;
+            }
+          };
+          
+          // عند التحديث
+          window.applicationCache.onupdateready = function() {
+            cacheStatus.textContent = '🔄 تحديث الكاش جاهز';
+            console.log('Cache: update ready');
+            // تحديث الكاش
+            try {
+              window.applicationCache.swapCache();
+              cacheStatus.textContent = '✅ تم تحديث الكاش';
+            } catch(e) {
+              console.log('Swap cache error:', e);
+            }
+          };
+          
+          // عند حدوث خطأ
+          window.applicationCache.onerror = function(e) {
+            cacheStatus.textContent = '⚠️ خطأ في الكاش - سيتم التحميل من الشبكة';
+            console.log('Cache: error');
+            if (window._cacheRetry) {
+              clearTimeout(window._cacheRetry);
+              window._cacheRetry = null;
+            }
+            // نستمر في العمل بدون كاش
+            return true;
+          };
+          
+          // عند انتهاء الصلاحية
+          window.applicationCache.onobsolete = function(e) {
+            cacheStatus.textContent = '⚠️ الكاش قديم، جاري التحميل من الشبكة';
+            console.log('Cache: obsolete');
+          };
+          
         } catch(e) {
           console.log('Cache handling error:', e);
+          cacheStatus.textContent = '⚠️ الكاش غير مدعوم';
         }
+      } else {
+        cacheStatus.textContent = '⚠️ المتصفح لا يدعم Application Cache';
       }
-
-      // 3. إضافة ملف manifest بطريقة ديناميكية بعد تحميل الصفحة
-      setTimeout(function() {
-        // نضيف manifest مرة أخرى بعد 10 ثواني
-        setTimeout(function() {
-          if (htmlElement) {
-            // نضيف manifest ولكن مع رقم إصدار لتحديث الكاش
-            htmlElement.setAttribute('manifest', 'cache.manifest?v=' + Date.now());
-            console.log('Manifest re-added with version');
-          }
-        }, 10000);
-      }, 2000);
 
       // ===== الوظائف الأساسية =====
       const btn = document.getElementById('jeilbrek');
@@ -551,11 +593,6 @@
       window.addEventListener('load', function() {
         const img = document.querySelector('.image-box img');
         if (img) {
-          const src = img.getAttribute('src');
-          if (src && !src.includes('?t=')) {
-            img.src = src + '?t=' + Date.now();
-          }
-          
           if (!img.complete || img.naturalWidth === 0) {
             setTimeout(function() {
               img.src = 'includes/Cat.jpg?t=' + Date.now();
@@ -563,6 +600,13 @@
           }
         }
         setTimeout(hideLoading, 1000);
+        
+        // تحديث حالة الكاش بعد التحميل
+        if (window.applicationCache && window.applicationCache.status === 0) {
+          cacheStatus.textContent = '✅ الكاش جاهز (غير متصل)';
+        } else if (window.applicationCache && window.applicationCache.status === 1) {
+          cacheStatus.textContent = '✅ الكاش جاهز (متصل)';
+        }
       });
 
       window.addEventListener('error', function(e) {

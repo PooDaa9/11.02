@@ -3,149 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بودة بلايستشن - متجر الألعاب</title>
+  <title>CSSFontFace exploit</title>
   <link rel="stylesheet" href="includes/style.css">
-  <style>
-    /* --- تنسيق الخلفية وعناصر الواجهة الجديدة --- */
-
-    /* تعيين الخلفية الرئيسية للصفحة مع إعدادات التغطية */
-    body {
-      margin: 0;
-      padding: 0;
-      background-image: url('includes/bg.png'); /* رابط صورة الخلفية */
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-
-    /* جعل الترويسة شفافة لتظهر فوق الخلفية */
-    h1, h3 {
-      background-color: rgba(0, 0, 0, 0.6); /* خلفية شبه شفافة */
-      padding: 15px;
-      margin: 0;
-      border-radius: 8px;
-      display: inline-block; /* لجعل الخلفية حول النص فقط */
-    }
-
-    /* تحسين مظهر الترويسة الرئيسية */
-    h1 {
-      font-size: 3em;
-      margin-top: 20px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    }
-
-    /* تحسين مظهر الترويسة الفرعية (اسم المحل) */
-    #UA {
-      font-size: 1.8em;
-      margin-top: 10px;
-      color: #f1c40f; /* لون مميز لاسم المحل */
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-    }
-
-    /* تنسيق رقم الهاتف */
-    .phone-number {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    /* تعديل الخط الفاصل */
-    hr {
-      border: 0;
-      height: 1px;
-      background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(241, 196, 15, 0.75), rgba(0, 0, 0, 0));
-      margin: 30px 0;
-    }
-
-    /* جعل حاوية الأزرار شفافة */
-    .btn-container {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-      display: inline-block;
-    }
-
-    /* تحسين الأزرار */
-    button, input[type="radio"] + label {
-      background-color: #34495e;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover, input[type="radio"] + label:hover {
-      background-color: #f1c40f;
-      color: #333;
-    }
-
-    /* تنسيق الصندوق الرئيسي (القطة والكونسول) */
-    .main-layout {
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    /* تنسيق مربع الصورة */
-    .media-box {
-      border: 2px solid #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-right: 20px;
-    }
-
-    /* تنسيق نص الكونسول */
-    #console {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-family: 'Courier New', Courier, monospace;
-      padding: 15px;
-      border-radius: 5px;
-      max-width: 600px;
-    }
-
-    /* ضمان ظهور اللوجو بشكل صحيح */
-    .media-box img {
-      max-width: 200px; /* تعديل حجم اللوجو */
-      height: auto;
-      display: block;
-    }
-
-    /* تنسيق خيار autoJb */
-    .autoJb {
-        margin-top: 15px;
-    }
-    #autoJbLabel {
-        color: #fff;
-    }
-    #autoJbInput {
-        transform: scale(1.5);
-        margin-left: 10px;
-    }
-
-  </style>
 </head>
 <body>
 
-  <!-- تم دمج الترويسات وتنسيقها -->
-  <h1>بوده بلايستشن</h1>
-  <h3 id="UA">
-    محل: بودة بلايستشن<br>
-    هاتف: <span class="phone-number">01278566009</span>
-  </h3>
+  <h1>CSSFontFace UAF Exploit</h1>
+  <h3 id="UA">Running on:</h3>
 
   <hr>
 
-  <!-- تم الاحتفاظ بجميع الأزرار والوظائف الأصلية كما هي -->
   <div class="btn-container">
     <form id="kernel-options">
       <input type="radio" name="kernel" id="netctrl-exploit" value="netctrl">
@@ -160,7 +27,6 @@
     </div>
   </div>
 
-  <!-- تم الاحتفاظ بمربع الوسائط (اللوجو) والكونسول -->
   <div class="main-layout">
     <div class="media-box">
       <img src="includes/cat.jpg" alt="A cat staring at you">
@@ -168,10 +34,12 @@
 
     <pre id="console">Ready. Awaiting execution...
   </pre>
+
+
   </div>
 
-  <!-- تم الاحتفاظ بجميع السكربتات الأصلية -->
   <script src="src/main.js"></script>
   <script src="includes/script.js"></script>
 </body>
+
 </html>

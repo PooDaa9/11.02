@@ -1,159 +1,104 @@
-/* إعدادات عامة للصفحة */
 body {
+    background: #111111;
+    color: #dddddd;
     margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
     text-align: center;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    /* هنا الخلفية - تم التعديل ليقبل الصورة من نفس مكان الملفات أو من الإنترنت كاحتياطي */
-    background-image: url('background.png'), 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 
-/* طبقة شفافة فوق الصورة عشان الكلام يقرا بوضوح */
-body::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.55); /* خففت السواد شوية عشان الصورة تبان */
-    z-index: -1;
-}
-
-/* العناوين */
 h1 {
     color: #ffffff;
-    font-size: 38px;
-    margin: 0 0 5px 0;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-    letter-spacing: 1px;
+    font-size: 28px;
+    margin: 10px 0 5px 0;
 }
 
 h3 {
-    color: #f0f0f0;
-    font-size: 16px;
+    color: #aaaaaa;
+    font-size: 14px;
     font-weight: normal;
-    margin: 0 0 20px 0;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+    margin: 0 0 15px 0;
 }
 
-/* حاوية الأزرار بتصميم زجاجي */
+hr {
+    border: 0;
+    border-top: 1px solid #333333;
+    margin: 15px auto;
+    width: 90%;
+}
+
 .btn-container {
-    background: rgba(0, 0, 0, 0.6); /* خلفية داكنة شفافة عشان الأزرار تبان */
-    padding: 25px 30px;
-    border-radius: 20px;
     margin: 20px 0 30px 0;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
-/* خيارات الكيرنل */
-#kernel-options {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    color: white;
-}
-
-#kernel-options label {
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-input[type="radio"] {
-    accent-color: #eab308;
-    width: 1.1rem;
-    height: 1.1rem;
-    cursor: pointer;
-}
-
-/* زر Jailbreak */
-button#jeilbrek {
-    background: linear-gradient(90deg, #f59e0b, #d97706);
-    color: #000000;
+button {
+    background: #2563eb;
+    color: #ffffff;
     border: none;
-    padding: 14px 50px;
-    font-size: 20px;
+    padding: 12px 35px;
+    font-size: 18px;
     font-weight: bold;
-    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5);
 }
 
-button#jeilbrek:hover:not(:disabled) {
-    transform: scale(1.05);
-    box-shadow: 0 6px 25px rgba(245, 158, 11, 0.8);
+button:disabled, button:hover:disabled {
+    background: #0b2253;
+    cursor: default;
 }
 
-button#jeilbrek:disabled {
-    background: #555;
-    cursor: not-allowed;
-    box-shadow: none;
+button:hover {
+    background: #1d4ed8;
 }
 
-/* Auto Jailbreak */
-.autoJb {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    color: white;
-}
-
-input[type="checkbox"] {
-    accent-color: #eab308;
-    width: 1.2rem;
-    height: 1.2rem;
-}
-
-/* شاشة الكونسول */
 .main-layout {
-    width: 95%;
-    max-width: 800px;
+    width: 96%;
     margin: 0 auto;
 }
 
+.media-box {
+    float: left;
+    width: 25%;
+    text-align: center;
+}
+
+.media-box img {
+    width: 90%;
+    height: auto;
+    border: 1px solid #222222;
+}
+
 #console {
-    background: rgba(0, 0, 0, 0.85);
+    float: right;
+    width: 70%;
+    background: #000000;
     color: #00ff00;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 15px;
-    padding: 20px;
+    font-size: 14px;
+    padding: 15px;
     text-align: left;
-    height: 300px;
-    overflow-y: auto;
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.7);
-    margin: 0;
+    height: 290px;
+    overflow-y: scroll;
+    word-wrap: break-word;
+    border: 1px solid #222222;
 }
 
-#console::-webkit-scrollbar {
-    width: 8px;
-}
-#console::-webkit-scrollbar-track {
-    background: #111;
-    border-radius: 10px;
-}
-#console::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 10px;
+#kernel-options {
+    margin-bottom: 1rem;
 }
 
-@media (max-width: 600px) {
-    #console {
-        height: 200px;
-    }
+input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #555;
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+input[type="radio"]:checked {
+    background-color: #00ff00;
+}
+
+.mt-2{
+    margin-top: 2rem;
 }
